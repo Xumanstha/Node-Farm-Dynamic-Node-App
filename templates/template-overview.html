@@ -16,6 +16,36 @@
     <title>NODE FARM</title>
 
     <style>
+      /* ========================================
+         CSS Variables - Colors, Spacing, Typography
+         ======================================== */
+      :root {
+        --color-primary: #9be15d;
+        --color-secondary: #00e3ae;
+        --color-accent: #79e17b;
+        --color-white: #ffffff;
+        --color-text: #555555;
+        --color-border: #dddddd;
+        --color-shadow: rgba(0, 0, 0, 0.15);
+        --color-shadow-hover: rgba(0, 0, 0, 0.2);
+
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 3rem;
+        --spacing-xl: 5rem;
+        --spacing-2xl: 8rem;
+
+        --font-heading: 'Megrim', sans-serif;
+        --font-body: 'Nunito Sans', sans-serif;
+
+        --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+        --shadow-small: 0 2rem 6rem 1rem var(--color-shadow);
+        --shadow-hover: 0 3rem 8rem 2rem var(--color-shadow-hover);
+      }
+
       *,
       *::before,
       *::after {
@@ -27,25 +57,44 @@
       html {
         font-size: 62.5%;
         box-sizing: border-box;
+        scroll-behavior: smooth;
       }
 
       body {
-        padding: 5rem 5rem 10rem;
+        padding: var(--spacing-xl);
         line-height: 1.7;
-        font-family: 'Nunito Sans', sans-serif;
-        color: #555;
+        font-family: var(--font-body);
+        color: var(--color-text);
         min-height: 100vh;
-        background: linear-gradient(to bottom right, #9be15d, #00e3ae);
+        background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        background-attachment: fixed;
       }
 
+      /* ========================================
+         Typography & Headings
+         ======================================== */
       h1 {
-        font-family: 'Megrim', sans-serif;
+        font-family: var(--font-heading);
         font-size: 6rem;
-        color: white;
+        color: var(--color-white);
         transform: skewY(-5deg);
         text-align: center;
         position: relative;
-        word-spacing: 3px;
+        word-spacing: 0.3rem;
+        letter-spacing: 0.1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        animation: slideDown 0.8s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px) skewY(-5deg);
+        }
+        to {
+          opacity: 1;
+          transform: skewY(-5deg);
+        }
       }
 
       h1::before {
@@ -56,62 +105,94 @@
         position: absolute;
         top: 105%;
         left: 50%;
-        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary));
         opacity: 0.8;
         z-index: -1;
         transform: skewY(370deg) translate(-50%, -50%);
+        filter: blur(0.5px);
       }
 
+      /* ========================================
+         Layout & Container
+         ======================================== */
       .container {
         width: 95rem;
         margin: 0 auto;
+        max-width: 100%;
+        padding: 0 var(--spacing-md);
       }
 
       .cards-container {
-        margin-top: 8rem;
+        margin-top: var(--spacing-2xl);
+        display: grid;
+        gap: var(--spacing-xl);
       }
 
+      /* ========================================
+         Card Component
+         ======================================== */
       .card {
-        background: white;
-        box-shadow: 0 2rem 6rem 1rem rgba(0, 0, 0, 0.15);
-        margin-bottom: 5rem;
+        background: var(--color-white);
+        box-shadow: var(--shadow-small);
         transform: skewX(-20deg);
         display: flex;
-        transition: all 0.5s;
+        transition: var(--transition-slow);
+        border-radius: 0.8rem;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        transform: skewX(-20deg) scale(1.08);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .card:focus-within {
+        outline: 3px solid var(--color-primary);
+        outline-offset: 2px;
       }
 
       .card__emoji {
         font-size: 5.5rem;
         line-height: 1.2;
-        padding: 1.5rem 6rem 0.5rem 1.5rem;
+        padding: var(--spacing-md) 6rem var(--spacing-xs) var(--spacing-md);
         letter-spacing: -4rem;
         transform: skewX(20deg);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .card__title-box {
-        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary));
         margin-right: auto;
         display: flex;
         align-items: center;
-        padding: 0 3rem;
+        padding: 0 var(--spacing-lg);
+        flex-grow: 1;
       }
 
       .card__title {
-        font-family: 'Megrim', sans-serif;
-        color: white;
+        font-family: var(--font-heading);
+        color: var(--color-white);
         font-size: 3.25rem;
         transform: skewX(20deg);
       }
 
+      /* ========================================
+         Card Details
+         ======================================== */
       .card__details {
         display: flex;
+        flex-wrap: nowrap;
       }
 
       .card__detail-box {
         align-self: stretch;
-        border-right: 1px solid #ddd;
+        border-right: 1px solid var(--color-border);
         display: flex;
         align-items: center;
+        padding: 0 var(--spacing-sm);
       }
 
       .card__detail-box:last-child {
@@ -123,66 +204,264 @@
         font-size: 1.8rem;
         transform: skewX(20deg);
         padding: 1.75rem;
+        transition: var(--transition-smooth);
       }
 
       .card__detail--organic {
         font-weight: 900;
         text-transform: uppercase;
         font-size: 1.9rem;
-        background-image: linear-gradient(to right, #9be15d, #00e3ae);
+        background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
         -webkit-background-clip: text;
         background-clip: text;
-        color: transparent;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 0.1rem;
       }
 
       .card__detail--price {
         font-weight: 900;
         font-size: 1.9rem;
+        color: var(--color-text);
       }
 
+      /* ========================================
+         Card Link/Button
+         ======================================== */
       .card__link:link,
       .card__link:visited {
         flex: 0 0 auto;
-        background-color: #79e17b;
-        color: white;
+        background-color: var(--color-accent);
+        color: var(--color-white);
         font-size: 1.6rem;
         font-weight: 900;
         text-transform: uppercase;
         text-decoration: none;
-        padding: 2.5rem;
+        padding: var(--spacing-lg) var(--spacing-lg);
         text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s;
+        transition: var(--transition-smooth);
+        letter-spacing: 0.1rem;
+        position: relative;
       }
 
       .card__link:hover,
       .card__link:active {
-        background-color: #9be15d;
+        background-color: var(--color-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .card__link:focus {
+        outline: 3px solid var(--color-primary);
+        outline-offset: -3px;
       }
 
       .card__link span {
         transform: skewX(20deg);
       }
 
-      .card:hover {
-        transform: skewX(-20deg) scale(1.08);
-        box-shadow: 0 3rem 8rem 2rem rgba(0, 0, 0, 0.15);
-      }
-
+      /* ========================================
+         Utility Classes
+         ======================================== */
       .emoji-left {
         font-size: 2rem;
-        margin-right: 1rem;
+        margin-right: var(--spacing-sm);
       }
 
       .emoji-right {
         font-size: 2rem;
-        margin-left: 1rem;
+        margin-left: var(--spacing-sm);
       }
 
       .not-organic {
         display: none;
+      }
+
+      /* ========================================
+         Responsive Design - Tablet (< 1024px)
+         ======================================== */
+      @media (max-width: 1024px) {
+        html {
+          font-size: 56.25%;
+        }
+
+        body {
+          padding: var(--spacing-lg);
+        }
+
+        .container {
+          width: 100%;
+        }
+
+        h1 {
+          font-size: 4.5rem;
+        }
+
+        .card__emoji {
+          font-size: 4rem;
+          padding: var(--spacing-sm) 3rem var(--spacing-xs) var(--spacing-sm);
+        }
+
+        .card__title {
+          font-size: 2.5rem;
+        }
+      }
+
+      /* ========================================
+         Responsive Design - Mobile (< 768px)
+         ======================================== */
+      @media (max-width: 768px) {
+        html {
+          font-size: 50%;
+        }
+
+        body {
+          padding: var(--spacing-md);
+          background-attachment: scroll;
+        }
+
+        h1 {
+          font-size: 3.5rem;
+          word-spacing: 0.2rem;
+        }
+
+        .cards-container {
+          gap: var(--spacing-lg);
+        }
+
+        .card {
+          flex-direction: column;
+          transform: skewX(0deg);
+        }
+
+        .card:hover {
+          transform: scale(1.04);
+        }
+
+        .card__emoji {
+          font-size: 3rem;
+          padding: var(--spacing-sm);
+          letter-spacing: -2rem;
+          transform: skewX(0deg);
+        }
+
+        .card__title-box {
+          padding: var(--spacing-md);
+        }
+
+        .card__title {
+          font-size: 1.8rem;
+          transform: skewX(0deg);
+        }
+
+        .card__details {
+          flex-wrap: wrap;
+        }
+
+        .card__detail-box {
+          flex: 1 1 50%;
+          border-right: none;
+          border-bottom: 1px solid var(--color-border);
+          padding: var(--spacing-xs);
+        }
+
+        .card__detail-box:last-child {
+          border-bottom: none;
+        }
+
+        .card__detail-box:nth-child(even) {
+          border-right: 1px solid var(--color-border);
+        }
+
+        .card__detail {
+          font-size: 1.4rem;
+          transform: skewX(0deg);
+          padding: 1rem;
+        }
+
+        .card__link:link,
+        .card__link:visited {
+          font-size: 1.4rem;
+          padding: var(--spacing-md);
+        }
+      }
+
+      /* ========================================
+         Responsive Design - Small Mobile (< 480px)
+         ======================================== */
+      @media (max-width: 480px) {
+        html {
+          font-size: 43.75%;
+        }
+
+        h1 {
+          font-size: 2.8rem;
+        }
+
+        .card__emoji {
+          font-size: 2.5rem;
+        }
+
+        .card__detail-box {
+          flex: 1 1 100% !important;
+          border-right: none !important;
+          border-bottom: 1px solid var(--color-border);
+        }
+
+        .card__detail-box:last-child {
+          border-bottom: none;
+        }
+      }
+
+      /* ========================================
+         Print Styles
+         ======================================== */
+      @media print {
+        body {
+          background: white;
+        }
+
+        .card {
+          page-break-inside: avoid;
+        }
+      }
+
+      /* ========================================
+         Accessibility - Reduced Motion
+         ======================================== */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* ========================================
+         Dark Mode Support
+         ======================================== */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: linear-gradient(135deg, #5a8c1a 0%, #006b52 100%);
+        }
+
+        .card {
+          background: #2a2a2a;
+          color: #e0e0e0;
+        }
+
+        .card__detail {
+          color: #e0e0e0;
+        }
+
+        .card__detail-box {
+          border-right-color: #444;
+        }
       }
     </style>
   </head>

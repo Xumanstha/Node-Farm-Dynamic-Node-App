@@ -1,8 +1,8 @@
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
-const replaceTemplate=require('./modules/replaceTemplate')
-const slug=require('slugify');
+const replaceTemplate = require("./modules/replaceTemplate");
+const slug = require("slugify");
 //////////////////////////////////////
 // const { text } = require('stream/consumers');
 
@@ -34,7 +34,6 @@ const slug=require('slugify');
 //////////////////////////////////
 ///SERVER
 
-
 const tempOverview = fs.readFileSync(
   `${__dirname}/templates/template-overview.html`,
   "utf-8",
@@ -50,26 +49,28 @@ const tempProduct = fs.readFileSync(
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
 const DataObj = JSON.parse(data);
-const slugs=DataObj.map(el=>slug(el.productName,{lower:true}));
+const slugs = DataObj.map((el) => slug(el.productName, { lower: true }));
 // console.log(slug('Fresh Avocados',{lower:true}));
 console.log(slugs);
 
 const server = http.createServer((req, res) => {
   // console.log(req.headers.host);
   const myUrl = new URL(req.url, `http://${req.headers.host}`);
-//   console.log(myUrl);
+  //   console.log(myUrl);
 
-//   const{query,pathname}=url.parse(req.url,true);
-//   console.log(url.parse(req.url,true)); 
+  //   const{query,pathname}=url.parse(req.url,true);
+  //   console.log(url.parse(req.url,true));
   const pathname = myUrl.pathname;
-//   console.log(pathname);
+  //   console.log(pathname);
 
   //Overview page
   if (pathname === "/" || pathname === "/overview") {
     res.writeHead(200, { "Content-type": "text/html" });
 
-    const cardsHtml = DataObj.map((el) => replaceTemplate(tempCard, el)).join('');
-    const output=tempOverview.replace('{%PRODUCT_CARDS%}',cardsHtml);
+    const cardsHtml = DataObj.map((el) => replaceTemplate(tempCard, el)).join(
+      "",
+    );
+    const output = tempOverview.replace("{%PRODUCT_CARDS%}", cardsHtml);
     // console.log(cardsHtml);
     // res.end(tempOverview);
     res.end(output);
@@ -78,10 +79,10 @@ const server = http.createServer((req, res) => {
   //Product page
   else if (pathname === "/product") {
     res.writeHead(200, { "Content-type": "text/html" });
-    const id=myUrl.searchParams.get("id");
-    const product=DataObj[id];
+    const id = myUrl.searchParams.get("id");
+    const product = DataObj[id];
     // console.log(product);
-    const output=replaceTemplate(tempProduct,product);
+    const output = replaceTemplate(tempProduct, product);
     res.end(output);
   }
 
